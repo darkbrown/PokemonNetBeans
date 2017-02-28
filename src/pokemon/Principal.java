@@ -5,6 +5,8 @@
  */
 package pokemon;
 
+import recursos.Imagenes;
+
 
 
 /**
@@ -20,7 +22,7 @@ public class Principal extends javax.swing.JFrame {
         
         initComponents();
         btnNuevo.requestFocus();
-        
+        setIconImage(Imagenes.getIconoAplicacion());
     }
 
     /**

@@ -44,6 +44,8 @@ public class Formulario extends javax.swing.JFrame {
         Icon icono = new ImageIcon(Imagenes.getImgFaltante().getImage().getScaledInstance(lblImage.getWidth(), lblImage.getHeight()
                 , Image.SCALE_DEFAULT));
         lblImage.setIcon(icono);
+        setIconImage(Imagenes.getIconoAplicacion());
+        
         
     }
 
@@ -123,6 +125,10 @@ public class Formulario extends javax.swing.JFrame {
         });
 
         cboTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Agua, fuego, veneno...", "Fuego", "Veneno", "Tierra", "Aire" }));
+
+        spinPeso.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+
+        spinAltura.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Nombre");
