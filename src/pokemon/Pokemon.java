@@ -12,19 +12,19 @@ package pokemon;
  */
 public class Pokemon {
    public static Principal inicio = new Principal();
-   public static Formulario form = new Formulario();
+   //public static Formulario form = new Formulario();
   
     
-   public static void setVisibleInicio(){
-       inicio.setVisible(true);
-   }
-   public static void setVisibleFormulario(){
-       form.setVisible(true);
-   }
+//   public static void setVisibleInicio(){
+//       inicio.setVisible(true);
+//   }
+//   public static void setVisibleFormulario(){
+//       form.setVisible(true);
+//   }
     
     public static void main(String[] args){
     System.out.println("Directorio ejecucion = " + System.getProperty("user.dir"));     
-    form.setVisible(true);
+    //form.setVisible(false);
     inicio.setVisible(true);
     
         

@@ -52,6 +52,11 @@ public class Principal extends javax.swing.JFrame {
                 btnNuevoActionPerformed(evt);
             }
         });
+        btnNuevo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnNuevoKeyPressed(evt);
+            }
+        });
 
         jButton2.setText("Editar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -132,13 +137,23 @@ public class Principal extends javax.swing.JFrame {
     
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
      Pokemon.inicio.setVisible(false);
-     Pokemon.form.setVisible(true);
+     Formulario form = new Formulario();
+     form.setVisible(true);
      
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnNuevoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnNuevoKeyPressed
+        char car=(char) evt.getKeyCode();
+        if(car==evt.VK_ENTER){
+           Pokemon.inicio.setVisible(false);
+           Formulario form = new Formulario();
+           form.setVisible(true);
+        }
+    }//GEN-LAST:event_btnNuevoKeyPressed
 
     /**
      * @param args the command line arguments

@@ -24,6 +24,10 @@ public class Formulario extends javax.swing.JFrame {
     /**
      * Creates new form Formulario
      */
+    private void cerrarFormulario(){
+        dispose();
+        pokemon.Pokemon.inicio.setVisible(true); 
+    }
     
     private void ocultarArteriscos(){
         artAltura.setVisible(false);
@@ -81,7 +85,13 @@ public class Formulario extends javax.swing.JFrame {
         artApodo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Formulario Pokemon");
         setResizable(false);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         lblImage.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
         //ImageIcon imagen = new ImageIcon("/pokemon/no_image.jpg");
@@ -92,6 +102,11 @@ public class Formulario extends javax.swing.JFrame {
         btnSubir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSubirActionPerformed(evt);
+            }
+        });
+        btnSubir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSubirKeyPressed(evt);
             }
         });
 
@@ -142,11 +157,21 @@ public class Formulario extends javax.swing.JFrame {
                 btnCancelarActionPerformed(evt);
             }
         });
+        btnCancelar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnCancelarKeyPressed(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
+            }
+        });
+        btnGuardar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnGuardarKeyPressed(evt);
             }
         });
 
@@ -288,46 +313,54 @@ public class Formulario extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-      Pokemon.form.setVisible(false);
-        
+        cerrarFormulario();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     static final int VACIOS = 0;
     static final int LLENOS = 1;
     
-    private int comprobarCampos(Object[] obj){
+    private int comprobarCampos(){
+        int campos = LLENOS;
+        
+        Object[] obj = pedirDatos();
+        
         if("".equals(obj[0]) || " ".equals(obj[0])){
             artNombre.setVisible(true);
+            campos = VACIOS;
         }
         if(obj[1] == "Agua, fuego, veneno..."){
             artTipo.setVisible(true);
+            campos = VACIOS;
         }
-        if("".equals(obj[2]) || " ".equals(obj[0])|| obj[2].equals(0)){
+        if("".equals(obj[2]) || " ".equals(obj[2])|| obj[2].equals(0)){
             artPeso.setVisible(true);
+            campos = VACIOS;
         }
-        if("".equals(obj[3]) || " ".equals(obj[0])|| obj[3].equals(0)){
+        if("".equals(obj[3]) || " ".equals(obj[3])|| obj[3].equals(0)){
             artAltura.setVisible(true);
+            campos = VACIOS;
         }
-        if("".equals(obj[4]) || " ".equals(obj[0])){
+        if("".equals(obj[4]) || " ".equals(obj[4])){
             artVida.setVisible(true);
+            campos = VACIOS;
         }
-        if("".equals(obj[5]) || " ".equals(obj[0]) ){
+        if("".equals(obj[5]) || " ".equals(obj[5]) ){
             artPuntos.setVisible(true);
+            campos = VACIOS;
         }
-        if("".equals(obj[6]) || " ".equals(obj[0])){
+        if("".equals(obj[6]) || " ".equals(obj[6])){
             artApodo.setVisible(true);
+            campos = VACIOS;
         }
         
-        return LLENOS;
+        return campos;
     }
     
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-       DefaultTableModel modelo=(DefaultTableModel) Pokemon.inicio.tblRegistros.getModel(); 
-       
-       
-       //Si los campos estan vacios se representan con 1s
-       int campos; 
+    private Object[] pedirDatos(){
+        
         Object []object = new Object[7];
         object[0] = txtNombre.getText();
         object[1] = cboTipo.getSelectedItem();
@@ -336,32 +369,43 @@ public class Formulario extends javax.swing.JFrame {
         object[4] = txtVida.getText();
         object[5] = txtPuntos.getText();
         object[6] = txtApodo.getText();
+        return object;
+    }
+    
+    private void guardarPokemon(){
+        int campos;
+       ocultarArteriscos();
+       DefaultTableModel modelo=(DefaultTableModel) Pokemon.inicio.tblRegistros.getModel(); 
        
-       //Comprueba que los campos no esten vacios
-        
-       campos = comprobarCampos(object);
-        
+       campos = comprobarCampos();
        //No envia los datos a la tabla si hay campos vacios
-       if(campos == LLENOS){
-           modelo.addRow(object);
-           Pokemon.inicio.tblRegistros.setModel(modelo);
+       if(campos == VACIOS){
+           JOptionPane.showMessageDialog(null, "Es necesario llenar todos los campos marcados con (*)");
        }else{
-           JOptionPane.showMessageDialog(null, "Es necesario llenar todos los campos");
+           try{
+                modelo.addRow(pedirDatos());
+                Pokemon.inicio.tblRegistros.setModel(modelo);
+                JOptionPane.showMessageDialog(null, "Pokemon guadado exitosamente");
+                dispose();
+                Pokemon.inicio.setVisible(true);
+                
+           }catch(Exception ex){
+               JOptionPane.showMessageDialog(null, "No se pudieron almacenar los datos" + ex);
+           }
        }
+    }
+    
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+       guardarPokemon();
         
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    File fichero;
-    private void btnSubirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubirActionPerformed
-       int resultado;
+    private void subirArchivo(){
+        int resultado;
        CargarImagen ventana = new CargarImagen();
        FileNameExtensionFilter filtro = new FileNameExtensionFilter("JPG y PNG","jpg","png");
-
         ventana.jFile.setFileFilter(filtro);
-
         resultado= ventana.jFile.showOpenDialog(null);
-
-
         if (JFileChooser.APPROVE_OPTION == resultado){
         fichero = ventana.jFile.getSelectedFile();
             try{
@@ -376,6 +420,10 @@ public class Formulario extends javax.swing.JFrame {
 
             }
         }
+    }
+    File fichero;
+    private void btnSubirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubirActionPerformed
+       subirArchivo();
     }//GEN-LAST:event_btnSubirActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -385,6 +433,32 @@ public class Formulario extends javax.swing.JFrame {
     private void txtNombreFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreFocusGained
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formKeyPressed
+
+    private void btnCancelarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnCancelarKeyPressed
+       char car=(char) evt.getKeyCode();
+        if(car==evt.VK_ENTER){
+           cerrarFormulario();
+        }
+    }//GEN-LAST:event_btnCancelarKeyPressed
+
+    private void btnGuardarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnGuardarKeyPressed
+        char car=(char) evt.getKeyCode();
+        if(car==evt.VK_ENTER){
+           guardarPokemon();
+           
+        }
+    }//GEN-LAST:event_btnGuardarKeyPressed
+
+    private void btnSubirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSubirKeyPressed
+        char car=(char) evt.getKeyCode();
+        if(car==evt.VK_ENTER){
+           subirArchivo();
+        }
+    }//GEN-LAST:event_btnSubirKeyPressed
 
    
     /**
